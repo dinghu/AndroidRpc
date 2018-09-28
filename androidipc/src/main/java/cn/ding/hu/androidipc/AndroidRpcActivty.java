@@ -79,10 +79,8 @@ public class AndroidRpcActivty extends AppCompatActivity {
                         Gson gson = new Gson();
 
                         if (!TextUtils.isEmpty(resultData)) {
-                            JSONObject jsonObject = new JSONObject(resultData);
-                            result = gson.fromJson(jsonObject.getString(resultData), resultClass);
-                        }else
-                        {
+                            result = gson.fromJson(resultData, resultClass);
+                        } else {
                             result = null;
                         }
 
