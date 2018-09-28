@@ -88,10 +88,10 @@ public class AndroidRpc {
 //    }
 
 
-    public static <T> void invoke(final AndroidRpcActivty activity,Object rpcService, String methodName, IRpcInvokeListener<T> invokeListener, Object... args) {
+    public static <T> void invoke(final AndroidRpcActivty activity,Class rpcServiceCls, String methodName, IRpcInvokeListener<T> invokeListener, Object... args) {
 
         try {
-            Method[] methods = rpcService.getClass().getMethods();
+            Method[] methods = rpcServiceCls.getMethods();
             for (int i = 0; i < methods.length; i++) {
                 if (methods[i].getName().equals(methodName)) {
                     Method method = methods[i];
@@ -103,7 +103,7 @@ public class AndroidRpc {
                     message.what = MSG_INVOKE_MSG;
                     message.replyTo = activity.getmClientMessenger();
                     Bundle bundle = new Bundle();
-                    bundle.putString("serviceName", rpcService.getClass().getName());
+                    bundle.putString("serviceName", rpcServiceCls.getName());
                     bundle.putString("methodName", method.getName());
                     bundle.putSerializable("parameterTypes", method.getParameterTypes());
                     bundle.putSerializable("arguments", args);
