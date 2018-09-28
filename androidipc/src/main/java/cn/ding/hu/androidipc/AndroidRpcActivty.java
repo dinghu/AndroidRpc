@@ -70,11 +70,11 @@ public class AndroidRpcActivty extends AppCompatActivity {
                 Bundle bundle = msg.getData();
                 if (bundle != null) {
                     try {
-                        String resultName = bundle.getString("resultName");
+                        Class resultClass = (Class)bundle.getSerializable("resultType");
                         String resultData = bundle.getString("resultData");
                         String methodName = bundle.getString("methodName");
 
-                        Class resultClass = Class.forName(resultName);
+//                        Class resultClass = Class.forName(resultName);
                         Gson gson = new Gson();
 
                         if (!TextUtils.isEmpty(resultData)) {

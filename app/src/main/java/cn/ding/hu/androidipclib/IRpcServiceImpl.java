@@ -9,7 +9,12 @@ import android.util.Log;
 public class IRpcServiceImpl implements IRpcService {
     @Override
     public String getName() {
-        Log.i("rpc","rpc call getName");
+        Log.i("rpc", "rpc call getName");
         return "dinghu-rpc-lixi";
+    }
+
+    @Override
+    public int getCal(int a, int b) {
+        return a + b;
     }
 }

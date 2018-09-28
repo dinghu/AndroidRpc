@@ -109,6 +109,7 @@ public class AndroidRpc {
                     bundle.putSerializable("arguments", args);
                     message.setData(bundle);
                     messenger.send(message);
+                    break;
                 }
             }
         } catch (Exception e) {

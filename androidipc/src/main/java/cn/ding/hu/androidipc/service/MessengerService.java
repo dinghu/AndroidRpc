@@ -38,7 +38,9 @@ public class MessengerService extends Service {
 
                         Class serviceClass = AndroidRpc.getService(serviceName);
                         if (serviceClass == null) {
-                            throw new RuntimeException(serviceName + " not found");
+                            //throw new RuntimeException(serviceName + " not found");
+                            Log.e("rpc",serviceName + " not found");
+                            return;
                         }
                         Method method = serviceClass.getMethod(methodName, parameterTypes);
                         Object result = method.invoke(serviceClass.newInstance(), arguments);
@@ -49,7 +51,9 @@ public class MessengerService extends Service {
                         message.what = AndroidRpc.MSG_INVOKE_MSG;
                         Gson gson = new Gson();
                         Bundle bundleRet = msg.getData();
-                        bundleRet.putString("resultName", method.getReturnType().getName());
+                        Log.e("rpc",serviceName + " not found");
+                        Log.e("rpc","resultType:" + method.getReturnType().getName());
+                        bundleRet.putSerializable("resultType", method.getReturnType());
                         bundleRet.putString("resultData", gson.toJson(result));
                         bundleRet.putString("methodName", methodName);
                         message.setData(bundleRet);
