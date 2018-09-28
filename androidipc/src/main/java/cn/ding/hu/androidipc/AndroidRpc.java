@@ -88,7 +88,7 @@ public class AndroidRpc {
 
             //发送消息
             System.out.println("提交事务111");
-            return this.invoke(proxy, method, args);
+            return null;
         }
     }
 
