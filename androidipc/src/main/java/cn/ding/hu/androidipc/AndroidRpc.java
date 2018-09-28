@@ -1,11 +1,8 @@
 package cn.ding.hu.androidipc;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityManager;
 import android.app.Application;
-import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.NonNull;
@@ -13,8 +10,6 @@ import android.support.annotation.NonNull;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**

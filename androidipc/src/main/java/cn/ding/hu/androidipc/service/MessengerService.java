@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -48,6 +49,7 @@ public class MessengerService extends Service {
                         message.what = AndroidRpc.MSG_INVOKE_MSG;
                         Gson gson = new Gson();
                         Bundle bundleRet = msg.getData();
+                        Log.i("rpc"," resultData:"+ gson.toJson(result));
                         bundleRet.putString("resultName", method.getReturnType().getName());
                         bundleRet.putString("resultData", gson.toJson(result));
                         bundleRet.putString("methodName", methodName);

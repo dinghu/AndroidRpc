@@ -14,8 +14,11 @@ import android.os.Messenger;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -64,7 +67,7 @@ public class AndroidRpcActivty extends AppCompatActivity {
         @Override
         public void handleMessage(final Message msg) {
             super.handleMessage(msg);
-            if (msg.arg1 == AndroidRpc.MSG_INVOKE_MSG) {
+            if (msg.what == AndroidRpc.MSG_INVOKE_MSG) {
                 Bundle bundle = msg.getData();
                 if (bundle != null) {
                     try {
@@ -74,8 +77,10 @@ public class AndroidRpcActivty extends AppCompatActivity {
 
                         Class resultClass = Class.forName(resultName);
                         Gson gson = new Gson();
+
                         if (!TextUtils.isEmpty(resultData)) {
-                            result = gson.fromJson(resultData, resultClass);
+                            JSONObject jsonObject = new JSONObject(resultData);
+                            result = gson.fromJson(jsonObject.getString(resultData), resultClass);
                         }
                         result = null;
                         IRpcInvokeListener iRpcInvokeListener = rpcInvokeListenerHashMap.get(methodName);
