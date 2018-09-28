@@ -48,7 +48,6 @@ public class AndroidRpcActivty extends AppCompatActivity {
     protected Object result;
 
     private IRpcListener iRpcListener;
-    private AndroidRpc.AndroidRpcInvocationHandler androidRpcInvocationHandler;
 
     private HashMap<String, IRpcInvokeListener> rpcInvokeListenerHashMap = new HashMap<>();
 

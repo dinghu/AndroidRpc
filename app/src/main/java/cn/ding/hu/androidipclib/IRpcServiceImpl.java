@@ -10,6 +10,6 @@ public class IRpcServiceImpl implements IRpcService {
     @Override
     public String getName() {
         Log.i("rpc","rpc call getName");
-        return "dinghu-rpc";
+        return "dinghu-rpc-lixi";
     }
 }
