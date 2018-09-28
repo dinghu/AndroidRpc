@@ -99,6 +99,7 @@ public class AndroidRpc {
             Method[] methods = rpcService.getClass().getMethods();
             for (int i = 0; i < methods.length; i++) {
                 if (methods[i].getName().equals(method)) {
+                    activity.addRpcInvokeListener(methods[i].getName(),invokeListener);
                     methods[i].invoke(rpcService, args);
                 }
             }

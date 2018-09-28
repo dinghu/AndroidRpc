@@ -5,5 +5,5 @@ package cn.ding.hu.androidipclib;
  */
 
 public interface IRpcService {
-    public void getName();
+    String  getName();
 }
