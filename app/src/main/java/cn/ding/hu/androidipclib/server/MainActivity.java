@@ -10,6 +10,8 @@ import cn.ding.hu.androidipclib.R;
 
 public class MainActivity extends AndroidRpcActivty {
 
+    public static  int t = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidRpc.init(getApplication(),"cn.ding.hu.androidipclib");

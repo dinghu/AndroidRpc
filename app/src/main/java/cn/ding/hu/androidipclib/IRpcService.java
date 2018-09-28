@@ -7,4 +7,5 @@ package cn.ding.hu.androidipclib;
 public interface IRpcService {
     String  getName();
     int  getCal(int a,int b);
+    User getUser();
 }
