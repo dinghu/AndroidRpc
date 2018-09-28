@@ -81,8 +81,11 @@ public class AndroidRpcActivty extends AppCompatActivity {
                         if (!TextUtils.isEmpty(resultData)) {
                             JSONObject jsonObject = new JSONObject(resultData);
                             result = gson.fromJson(jsonObject.getString(resultData), resultClass);
+                        }else
+                        {
+                            result = null;
                         }
-                        result = null;
+
                         IRpcInvokeListener iRpcInvokeListener = rpcInvokeListenerHashMap.get(methodName);
                         if (iRpcInvokeListener != null) {
                             iRpcInvokeListener.onResult(result);
