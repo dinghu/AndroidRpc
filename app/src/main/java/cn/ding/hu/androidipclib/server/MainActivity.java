@@ -1,14 +1,14 @@
-package cn.ding.hu.androidipclib;
+package cn.ding.hu.androidipclib.server;
 
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import cn.ding.hu.androidipc.AndroidRpc;
 import cn.ding.hu.androidipc.AndroidRpcActivty;
+import cn.ding.hu.androidipclib.IRpcService;
+import cn.ding.hu.androidipclib.IRpcServiceImpl;
+import cn.ding.hu.androidipclib.R;
 
 public class MainActivity extends AndroidRpcActivty {
-    IRpcService rpcService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,6 @@ public class MainActivity extends AndroidRpcActivty {
         AndroidRpc.register(IRpcService.class,IRpcServiceImpl.class);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        rpcService = (IRpcService)AndroidRpc.getRpcService(IRpcService.class,this);
-        rpcService.getName();
+        AndroidRpc.startService(this);
     }
 }

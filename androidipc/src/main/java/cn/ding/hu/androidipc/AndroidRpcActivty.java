@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 /**
  * Created by harry.ding on 2018/9/27.
@@ -26,7 +27,7 @@ import java.lang.reflect.Method;
 public class AndroidRpcActivty extends AppCompatActivity {
 
 
-    private static final String BIND_SERVICE_ACTION = "android.intent.action.ICALL_MESSENGER_YIFEI";
+    private static final String BIND_SERVICE_ACTION = "android.intent.action.ICALL_MESSENGER_RPC";
 
     private static final String BIND_MESSENGER_SERVICE_COMPONENT_NAME_CLS = "cn.ding.hu.androidipc.service.MessengerService";
 
@@ -43,6 +44,19 @@ public class AndroidRpcActivty extends AppCompatActivity {
 
     protected Object result;
 
+    private IRpcListener iRpcListener;
+    private AndroidRpc.AndroidRpcInvocationHandler androidRpcInvocationHandler;
+
+    private HashMap<String, IRpcInvokeListener> rpcInvokeListenerHashMap = new HashMap<>();
+
+    public void addRpcInvokeListener(String key, IRpcInvokeListener iRpcInvokeListener) {
+        rpcInvokeListenerHashMap.put(key, iRpcInvokeListener);
+    }
+
+
+    public void setiRpcListener(IRpcListener iRpcListener) {
+        this.iRpcListener = iRpcListener;
+    }
 
     //客户端接受服务端消息的Messnger
     @SuppressLint("HandlerLeak")
@@ -56,6 +70,7 @@ public class AndroidRpcActivty extends AppCompatActivity {
                     try {
                         String resultName = bundle.getString("resultName");
                         String resultData = bundle.getString("resultData");
+                        String methodName = bundle.getString("methodName");
 
                         Class resultClass = Class.forName(resultName);
                         Gson gson = new Gson();
@@ -63,7 +78,10 @@ public class AndroidRpcActivty extends AppCompatActivity {
                             result = gson.fromJson(resultData, resultClass);
                         }
                         result = null;
-
+                        IRpcInvokeListener iRpcInvokeListener = rpcInvokeListenerHashMap.get(methodName);
+                        if (iRpcInvokeListener != null) {
+                            iRpcInvokeListener.onResult(result);
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -76,6 +94,9 @@ public class AndroidRpcActivty extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mServerMessenger = new Messenger(service);
+            if (iRpcListener != null) {
+                iRpcListener.onConnect();
+            }
         }
 
         @Override
@@ -84,10 +105,17 @@ public class AndroidRpcActivty extends AppCompatActivity {
         }
     };
 
-    private void startAndBindService() {
+    public void startService() {
         Intent serviceIntent = new Intent();
         serviceIntent.setAction(BIND_SERVICE_ACTION);
-        serviceIntent.setComponent(new ComponentName(AndroidRpc.sServicePkgName, BIND_MESSENGER_SERVICE_COMPONENT_NAME_CLS));
+        serviceIntent.setComponent(new ComponentName(AndroidRpc.mServicePkgName, BIND_MESSENGER_SERVICE_COMPONENT_NAME_CLS));
+        startService(serviceIntent);
+    }
+
+    public void startAndBindService() {
+        Intent serviceIntent = new Intent();
+        serviceIntent.setAction(BIND_SERVICE_ACTION);
+        serviceIntent.setComponent(new ComponentName(AndroidRpc.mServicePkgName, BIND_MESSENGER_SERVICE_COMPONENT_NAME_CLS));
 
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -99,7 +127,7 @@ public class AndroidRpcActivty extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startAndBindService();
+        //startAndBindService();
     }
 
     @Override

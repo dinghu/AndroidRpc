@@ -50,6 +50,7 @@ public class MessengerService extends Service {
                         Bundle bundleRet = msg.getData();
                         bundleRet.putString("resultName", method.getReturnType().getName());
                         bundleRet.putString("resultData", gson.toJson(result));
+                        bundleRet.putString("methodName", methodName);
                         message.setData(bundleRet);
                         clientMessenger.send(message);
                     } catch (Exception e) {

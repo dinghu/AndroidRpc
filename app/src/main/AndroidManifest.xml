@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".server.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
 
-        <service android:name="cn.ding.hu.androidipc.service.MessengerService"/>
+        <service android:name="cn.ding.hu.androidipc.service.MessengerService"
+            android:exported="true"/>
     </application>
 
 </manifest>
