@@ -1,5 +1,5 @@
 # AndroidRpc
-android ipc rpc framework based on messenger 
+android跨进程调用框架，基于messenger进行进程间通信
 
 示例demo：https://github.com/dinghu/AndroidRpcClientDemo
 
