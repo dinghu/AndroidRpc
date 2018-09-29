@@ -1,7 +1,6 @@
 package cn.ding.hu.androidipc;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,13 +13,9 @@ import android.os.Messenger;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.lang.reflect.Method;
 import java.util.HashMap;
 
 /**
@@ -30,9 +25,9 @@ import java.util.HashMap;
 public class AndroidRpcActivty extends AppCompatActivity {
 
 
-    private static final String BIND_SERVICE_ACTION = "android.intent.action.ICALL_MESSENGER_RPC";
+    private static final String BIND_SERVICE_ACTION = "android.intent.action.AndroidRpcService";
 
-    private static final String BIND_MESSENGER_SERVICE_COMPONENT_NAME_CLS = "cn.ding.hu.androidipc.service.MessengerService";
+    private static final String BIND_MESSENGER_SERVICE_COMPONENT_NAME_CLS = "cn.ding.hu.androidipc.service.AndroidRpcService";
 
     //给服务端发送消息的Messenger
     private Messenger mServerMessenger;
@@ -70,19 +65,15 @@ public class AndroidRpcActivty extends AppCompatActivity {
                 Bundle bundle = msg.getData();
                 if (bundle != null) {
                     try {
-                        Class resultClass = (Class)bundle.getSerializable("resultType");
+                        Class resultClass = (Class) bundle.getSerializable("resultType");
                         String resultData = bundle.getString("resultData");
                         String methodName = bundle.getString("methodName");
-
-//                        Class resultClass = Class.forName(resultName);
                         Gson gson = new Gson();
-
                         if (!TextUtils.isEmpty(resultData)) {
                             result = gson.fromJson(resultData, resultClass);
                         } else {
                             result = null;
                         }
-
                         IRpcInvokeListener iRpcInvokeListener = rpcInvokeListenerHashMap.get(methodName);
                         if (iRpcInvokeListener != null) {
                             iRpcInvokeListener.onResult(result);
@@ -127,12 +118,6 @@ public class AndroidRpcActivty extends AppCompatActivity {
 
     private void unBindService() {
         unbindService(serviceConnection);
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //startAndBindService();
     }
 
     @Override

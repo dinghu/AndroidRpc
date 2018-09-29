@@ -7,9 +7,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.support.annotation.NonNull;
 
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.HashMap;
 
 /**
@@ -96,8 +94,6 @@ public class AndroidRpc {
                 if (methods[i].getName().equals(methodName)) {
                     Method method = methods[i];
                     activity.addRpcInvokeListener(method.getName(),invokeListener);
-//                    methods[i].invoke(rpcService, args);
-
                     Messenger messenger = activity.getmServerMessenger();
                     Message message = Message.obtain();
                     message.what = MSG_INVOKE_MSG;

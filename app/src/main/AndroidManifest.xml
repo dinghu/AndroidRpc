@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="cn.ding.hu.androidipc.service.MessengerService"
+        <service android:name="cn.ding.hu.androidipc.service.AndroidRpcService"
             android:exported="true"/>
     </application>
 

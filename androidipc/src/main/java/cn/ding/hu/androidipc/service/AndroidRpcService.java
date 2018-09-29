@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -16,7 +17,7 @@ import java.lang.reflect.Method;
 
 import cn.ding.hu.androidipc.AndroidRpc;
 
-public class MessengerService extends Service {
+public class AndroidRpcService extends Service {
 
     @SuppressLint("HandlerLeak")
     private Messenger messenger = new Messenger(new Handler() {
@@ -32,14 +33,13 @@ public class MessengerService extends Service {
                         String serviceName = bundleReq.getString("serviceName");
                         String methodName = bundleReq.getString("methodName");
 
-                        if ("toString".equals(methodName)) {
+                        if (TextUtils.isEmpty(methodName) || "toString".equals(methodName)) {
                             return;
                         }
 
                         Class serviceClass = AndroidRpc.getService(serviceName);
                         if (serviceClass == null) {
-                            //throw new RuntimeException(serviceName + " not found");
-                            Log.e("rpc",serviceName + " not found");
+                            Log.e("rpc", serviceName + " not found");
                             return;
                         }
                         Method method = serviceClass.getMethod(methodName, parameterTypes);
@@ -51,8 +51,6 @@ public class MessengerService extends Service {
                         message.what = AndroidRpc.MSG_INVOKE_MSG;
                         Gson gson = new Gson();
                         Bundle bundleRet = msg.getData();
-                        Log.e("rpc",serviceName + " not found");
-                        Log.e("rpc","resultType:" + method.getReturnType().getName());
                         bundleRet.putSerializable("resultType", method.getReturnType());
                         bundleRet.putString("resultData", gson.toJson(result));
                         bundleRet.putString("methodName", methodName);
@@ -65,10 +63,6 @@ public class MessengerService extends Service {
             }
         }
     });
-
-    public MessengerService() {
-
-    }
 
     @Override
     public IBinder onBind(Intent intent) {
